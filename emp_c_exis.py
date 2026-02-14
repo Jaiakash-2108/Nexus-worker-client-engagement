@@ -5,7 +5,7 @@ import cgi, cgitb
 import string,random,smtplib
 
 cgitb.enable()
-con = pymysql.connect(host="localhost", user="root", password="", database="nexus",port=3307)
+con = pymysql.connect(host="localhost", user="root", password="", database="nexus",port=3306)
 cur = con.cursor()
 form = cgi.FieldStorage()
 pid = form.getvalue("id")

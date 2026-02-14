@@ -42,11 +42,17 @@ class CGIRequestHandler(http.server.BaseHTTPRequestHandler):
         # Check if it's a Python script (CGI)
         if file_path.endswith('.py'):
             self.execute_cgi(full_path, method, parsed_path.query)
+        # Check if it's a static file (media, images, css, js)
         elif full_path.exists() and full_path.is_file():
             # Serve static files
             self.serve_file(full_path)
+        # Try with .py extension if the file doesn't exist
+        elif not file_path.endswith('.py') and (project_dir / (file_path + '.py')).exists():
+            self.execute_cgi(project_dir / (file_path + '.py'), method, parsed_path.query)
         else:
-            self.send_error(404, "File not found")
+            # Log the requested path for debugging
+            print(f"⚠ 404 Not Found: {file_path} (Full: {full_path})", file=sys.stderr)
+            self.send_error(404, f"File not found: {file_path}")
     
     def execute_cgi(self, script_path, method, query_string):
         """Execute a Python script as CGI"""
@@ -128,29 +134,42 @@ class CGIRequestHandler(http.server.BaseHTTPRequestHandler):
             with open(file_path, 'rb') as f:
                 content = f.read()
             
-            # Determine content type
-            if file_path.suffix == '.html':
-                content_type = 'text/html'
-            elif file_path.suffix == '.css':
-                content_type = 'text/css'
-            elif file_path.suffix == '.js':
-                content_type = 'application/javascript'
-            elif file_path.suffix == '.json':
-                content_type = 'application/json'
-            elif file_path.suffix in ['.jpg', '.jpeg']:
-                content_type = 'image/jpeg'
-            elif file_path.suffix == '.png':
-                content_type = 'image/png'
-            else:
-                content_type = 'application/octet-stream'
+            # Determine content type based on file extension
+            suffix = file_path.suffix.lower()
+            content_types = {
+                '.html': 'text/html',
+                '.css': 'text/css',
+                '.js': 'application/javascript',
+                '.json': 'application/json',
+                '.jpg': 'image/jpeg',
+                '.jpeg': 'image/jpeg',
+                '.png': 'image/png',
+                '.gif': 'image/gif',
+                '.svg': 'image/svg+xml',
+                '.ico': 'image/x-icon',
+                '.webp': 'image/webp',
+                '.pdf': 'application/pdf',
+                '.txt': 'text/plain',
+                '.csv': 'text/csv',
+            }
+            content_type = content_types.get(suffix, 'application/octet-stream')
             
             self.send_response(200)
             self.send_header('Content-Type', content_type)
             self.send_header('Content-Length', len(content))
+            self.send_header('Cache-Control', 'public, max-age=3600')
             self.end_headers()
             self.wfile.write(content)
+            
+            # Log successful file serve
+            print(f"✓ Served: {file_path.relative_to(project_dir)} ({len(content)} bytes)", file=sys.stderr)
         
+        except FileNotFoundError:
+            self.send_error(404, "File not found")
+        except PermissionError:
+            self.send_error(403, "Permission denied")
         except Exception as e:
+            print(f"✗ Error serving {file_path}: {str(e)}", file=sys.stderr)
             self.send_error(500, f"Error serving file: {str(e)}")
     
     def log_message(self, format, *args):

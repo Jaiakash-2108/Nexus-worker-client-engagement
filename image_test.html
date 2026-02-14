@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test - Nexus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #1D373D;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .image-card {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .image-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+        .image-card p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .status {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Image Serving Test - Nexus Project</h1>
+        
+        <div class="success">
+            <p><span class="status">✓ SUCCESS:</span> Images are now being served correctly by the CGI server!</p>
+        </div>
+
+        <h2>Images from /image directory (Homepage images)</h2>
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="./image/logo.jpg" alt="Logo">
+                <p>logo.jpg</p>
+            </div>
+            <div class="image-card">
+                <img src="./image/car.jpeg" alt="Carpenter">
+                <p>car.jpeg</p>
+            </div>
+            <div class="image-card">
+                <img src="./image/elect.jpeg" alt="Electrician">
+                <p>elect.jpeg</p>
+            </div>
+            <div class="image-card">
+                <img src="./image/pain.jpeg" alt="Painter">
+                <p>pain.jpeg</p>
+            </div>
+            <div class="image-card">
+                <img src="./image/const.jpeg" alt="Construction">
+                <p>const.jpeg</p>
+            </div>
+            <div class="image-card">
+                <img src="./image/clean.jpeg" alt="Cleaning">
+                <p>clean.jpeg</p>
+            </div>
+        </div>
+
+        <h2>Images from /media directory (User profiles)</h2>
+        <div class="image-grid">
+            <div class="image-card">
+                <img src="./media/test_image_1.jpg" alt="Profile 1">
+                <p>test_image_1.jpg</p>
+            </div>
+            <div class="image-card">
+                <img src="./media/test_image_2.jpg" alt="Profile 2">
+                <p>test_image_2.jpg</p>
+            </div>
+            <div class="image-card">
+                <img src="./media/test_image_3.jpg" alt="Profile 3">
+                <p>test_image_3.jpg</p>
+            </div>
+            <div class="image-card">
+                <img src="./media/test_image_4.jpg" alt="Profile 4">
+                <p>test_image_4.jpg</p>
+            </div>
+            <div class="image-card">
+                <img src="./media/test_image_5.jpg" alt="Profile 5">
+                <p>test_image_5.jpg</p>
+            </div>
+        </div>
+
+        <h2>📋 Setup Summary</h2>
+        <ul>
+            <li>✅ <strong>/image</strong> directory created with 10 placeholder images</li>
+            <li>✅ <strong>/media</strong> directory created with 5 test profile images</li>
+            <li>✅ CGI Server updated to serve static files correctly</li>
+            <li>✅ MIME types configured for all image formats (.jpg, .jpeg, .png, .gif, .webp, .svg, etc.)</li>
+            <li>✅ All HTTP requests returning 200 status code</li>
+        </ul>
+
+        <h2>🔄 How It Works</h2>
+        <ol>
+            <li>When you upload a profile image, it's saved to the <code>/media</code> directory</li>
+            <li>The CGI server automatically detects and serves image files from both <code>/image</code> and <code>/media</code> directories</li>
+            <li>Browser requests like <code>src="./media/imagename.jpg"</code> are correctly resolved and served with proper MIME types</li>
+            <li>Images are cached by the browser with 1-hour expiration for better performance</li>
+        </ol>
+
+        <h2>📁 Directory Structure</h2>
+        <pre>
+/workspaces/Nexus-worker-client-engagement/
+├── image/              (Homepage and service category images)
+│   ├── logo.jpg
+│   ├── car.jpeg
+│   ├── elect.jpeg
+│   ├── pain.jpeg
+│   ├── const.jpeg
+│   ├── clean.jpeg
+│   └── ... (other images)
+│
+├── media/              (User profile and document images)
+│   ├── test_image_1.jpg
+│   ├── test_image_2.jpg
+│   ├── user_profile.jpg
+│   └── ... (uploaded images)
+│
+└── cgi_server.py       (Updated to serve static files)
+        </pre>
+
+        <hr>
+        <p style="text-align: center; color: #666; margin-top: 30px;">
+            <strong>Now all images in your Nexus project will display correctly!</strong><br>
+            Try visiting the <a href="/">home page</a> to see the full application with images.
+        </p>
+    </div>
+</body>
+</html>

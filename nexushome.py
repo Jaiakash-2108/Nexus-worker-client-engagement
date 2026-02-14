@@ -3,7 +3,7 @@ print("content-type:text/html \r\n\r\n")
 import pymysql
 import cgitb
 cgitb.enable()
-con=pymysql.connect(host="localhost",user="root",password="",database="nexus",port=3307)
+con=pymysql.connect(host="localhost",user="root",password="",database="nexus",port=3306)
 cur=con.cursor()
 print("""
 <!DOCTYPE html>
